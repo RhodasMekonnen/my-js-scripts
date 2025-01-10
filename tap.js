@@ -229,15 +229,11 @@
   
         let tapNr = menuItem.MenuItemDisplayDetail.DisplayOrder;
   
-        if (tapNr > 16) {
   
-          app.handPump.data = beer;
-  
-        } else {
   
           Vue.set(app.taps.data, tapNr - 1, beer);
   
-        }
+        
   
       });
   
