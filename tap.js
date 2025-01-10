@@ -82,7 +82,7 @@
   
     let TapListComponent = Vue.component('tap-list', {
   
-      props: ['taps', 'handPump'],
+      props: ['taps'],
   
       components: {
   
@@ -145,15 +145,7 @@
   
         },
   
-        handPump: {
-  
-          show: false,
-  
-          title: 'And on the Hand Pump:',
-  
-          data: null,
-  
-        },
+        
   
         isDataFetchCompleted: false,
   
