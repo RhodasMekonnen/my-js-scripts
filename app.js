@@ -64,7 +64,7 @@ let TapList = (function () {
     },
     template: `
       <div>
-        <loading-indicator :loading="!isDataFetchCompleted"></loading-indicator>
+        'loading-indicator': window.VueSpinner ? VueSpinner.PulseLoader : { template: '<span></span>' },
         <tap-list v-if="isDataFetchCompleted"
                   :taps="taps"></tap-list>
       </div>`,
