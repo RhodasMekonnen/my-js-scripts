@@ -126,18 +126,4 @@ let TapList = (function () {
         Vue.set(app.taps.data, tapNr - 1, beer);
       }
     });
-    app.isDataFetchCompleted = true;
-    _trigger_rellax_resize();
-  }
-
-  jQuery('head').append('<link rel="stylesheet" href="https://cdn.rawgit.com/fubu/alehouse-taplist/alehouse.ch/app.css">');
-
-  window.tapListCallback = function(data) {
-    mapBeersToTaps(data);
-  };
-
-  var script = document.createElement('script');
-  script.src = 'https://server2.digitalpour.com/DashboardServer/api/v3/MenuItems/589dfe065e002c0e5ce61eba/1/Tap?apiKey=589dfe3c5e002c0b4cba022c&callback=tapListCallback';
-  document.head.appendChild(script);
-
-})();
+    app.isDataFetchCompleted = tru
