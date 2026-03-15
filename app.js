@@ -126,4 +126,14 @@ let TapList = (function () {
         Vue.set(app.taps.data, tapNr - 1, beer);
       }
     });
-    app.isDataFetchCompleted = tru
+    app.isDataFetchCompleted = true;
+    _trigger_rellax_resize();
+  }
+
+  jQuery('head').append('<link rel="stylesheet" href="https://cdn.rawgit.com/fubu/alehouse-taplist/alehouse.ch/app.css">');
+
+  fetch('https://alehouse-taplist.rhodas145.workers.dev/')
+    .then(response => response.json())
+    .then(mapBeersToTaps);
+
+})();
