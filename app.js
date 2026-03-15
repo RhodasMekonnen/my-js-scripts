@@ -59,12 +59,12 @@ let TapList = (function () {
   var app = new Vue({
     el: '#tap-list-app',
     components: {
-      'loading-indicator': VueSpinner.PulseLoader,
+      'loading-indicator': window.VueSpinner ? VueSpinner.PulseLoader : { template: '<span></span>' },
       'tap-list': TapListComponent,
     },
     template: `
       <div>
-        'loading-indicator': window.VueSpinner ? VueSpinner.PulseLoader : { template: '<span></span>' },
+        <loading-indicator :loading="!isDataFetchCompleted"></loading-indicator>
         <tap-list v-if="isDataFetchCompleted"
                   :taps="taps"></tap-list>
       </div>`,
@@ -78,11 +78,15 @@ let TapList = (function () {
     },
   });
 
+  function _trigger_rellax_resize() {
+    jQuery(window).trigger("ontouchstart" in window && "onorientationchange" in window ? "orientationchange" : "resize");
+  }
+
   function mapBeersToTaps(response) {
     response.forEach(function extractBeer(menuItem) {
       let details = menuItem.MenuItemProductDetail;
 
-      if (!details) return; // tap is empty, skip it
+      if (!details) return;
 
       let beverage = details.Beverage;
 
@@ -90,12 +94,12 @@ let TapList = (function () {
       for (let price of details.Prices) {
         if (price.DisplayOnMenu) {
           serving = {
-            size: parseFloat(price.DisplayName, 10).toFixed(2),
+            size: parseFloat(price.DisplayName).toFixed(2),
             price: price.Price.toFixed(2),
           };
           break;
         }
-      };
+      }
 
       let links = {
         beerAdvocate: beverage.BeerAdvocateUrl,
@@ -123,12 +127,19 @@ let TapList = (function () {
       }
     });
     app.isDataFetchCompleted = true;
-  };
-
-  return {
-    load: function (data) {
-      mapBeersToTaps(data)
-    }
   }
+
+  jQuery('head').append('<link rel="stylesheet" href="https://cdn.rawgit.com/fubu/alehouse-taplist/alehouse.ch/app.css">');
+
+  fetch('https://server2.digitalpour.com/DashboardServer/api/v3/MenuItems/589dfe065e002c0e5ce61eba/1/Tap?apiKey=589dfe3c5e002c0b4cba022c', {
+    method: 'GET',
+    credentials: 'omit',
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(mapBeersToTaps)
+    .then(_trigger_rellax_resize);
 
 })();
